@@ -20,6 +20,10 @@ void Connection::process() {
         if (n <= 0) {
             std::cout << "Client disconnected: " << fd_ << std::endl;
 	        if (player_id_ != -1) {
+	        	auto player = PlayerManager::getInstance().getPlayer(player_id_);
+    if (player && player->getRoomId() != -1) {
+        RoomManager::getInstance().leaveRoom(player_id_, player->getRoomId());
+    }
 		        PlayerManager::getInstance().removePlayer(player_id_);
 		        std::cout << "Player " << player_id_ << " removed" << std::endl;
 		    }
@@ -105,6 +109,35 @@ void Connection::handleMessage(const std::string& msg){
 		}
         
     		}
-	}
+	}else if(msg.rfind("room_msg:", 0) == 0){
+		if (player_id_ == -1) return;
+
+    auto player = PlayerManager::getInstance().getPlayer(player_id_);
+    if (!player) return;
+
+    int room_id = player->getRoomId();
+    if (room_id == -1) {
+        sendMessage("not_in_room");
+        return;
+    }
+
+    std::string content = msg.substr(9);
+    std::string forward = "room_msg:" + std::to_string(player_id_) + ":" + content;
+    RoomManager::getInstance().sendRoomMsg(room_id, forward);
+	}else if (msg == "leave_room") {
+    if (player_id_ == -1) return;
+
+    auto player = PlayerManager::getInstance().getPlayer(player_id_);
+    if (!player) return;
+
+    int room_id = player->getRoomId();
+    if (room_id == -1) {
+        sendMessage("not_in_room");
+        return;
+    }
+
+    RoomManager::getInstance().leaveRoom(player_id_, room_id);
+    sendMessage("leave_room_ok");
+}
 }
 
