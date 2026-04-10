@@ -34,10 +34,9 @@ file(GLOB SERVER_SRC
 add_executable(server ${SERVER_SRC} ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(server pthread ${Protobuf_LIBRARIES})
 
-# ===== client1 =====
-add_executable(client1 src/client/client1.cpp)
-target_link_libraries(client1 pthread)
-
+#===== client1 =====
+add_executable(client1 src/client/client1.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+target_link_libraries(client1 pthread ${Protobuf_LIBRARIES})
 # ===== client2 =====
-add_executable(client2 src/client/client2.cpp)
-target_link_libraries(client2 pthread)
+add_executable(client2 src/client/client2.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+target_link_libraries(client2 pthread ${Protobuf_LIBRARIES})
