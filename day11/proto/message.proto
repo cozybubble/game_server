@@ -1,0 +1,38 @@
+syntax = "proto3";
+package game;
+
+message LoginReq { int32 player_id = 1; }
+message LoginRsp {
+  bool success = 1;
+  string message = 2;
+  int32 player_id = 3;
+}
+
+message MatchReq {}
+message MatchRsp {
+  bool success = 1;
+  string message = 2;
+  int32 room_id = 3;
+}
+
+message RoomEnterNtf {
+  int32 room_id = 1;
+  repeated int32 player_ids = 2;
+}
+
+message RoomChatReq { string content = 1; }
+message RoomChatNtf {
+  int32 player_id = 1;
+  string content = 2;
+}
+
+message LeaveRoomReq {}
+message LeaveRoomRsp {
+  bool success = 1;
+  string message = 2;
+}
+
+message ErrorRsp {
+  int32 code = 1;
+  string message = 2;
+}
