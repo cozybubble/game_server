@@ -1,0 +1,21 @@
+syntax = "proto3";
+package game;
+
+enum Command {
+  CMD_NONE = 0;
+  CMD_LOGIN_REQ = 1;
+  CMD_LOGIN_RSP = 2;
+  CMD_MATCH_REQ = 3;
+  CMD_MATCH_RSP = 4;
+  CMD_ROOM_ENTER_NTF = 5;
+  CMD_ROOM_CHAT_REQ = 6;
+  CMD_ROOM_CHAT_NTF = 7;
+  CMD_LEAVE_ROOM_REQ = 8;
+  CMD_LEAVE_ROOM_RSP = 9;
+  CMD_ERROR_RSP = 10;
+}
+
+message Packet {
+  Command cmd = 1;
+  bytes payload = 2;
+}
